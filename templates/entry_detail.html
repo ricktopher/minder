@@ -5,4 +5,7 @@
         <h2><a href="">{{ entry.title }}</a></h2>
         <p>{{ entry.body }}</p>
     </div>
+
+    <p><a href="{% url 'entry_edit' entry.pk %}">+ Edit Journal Entry</a></p>
+    <p><a href="{% url 'entry_delete' entry.pk %}">+ Delete Journal Entry</a></p>
 {% endblock content %}

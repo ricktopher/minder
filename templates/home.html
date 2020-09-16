@@ -2,9 +2,19 @@
 
 {% block content %}
     {% for entry in object_list %}
-        <div class="entry">
-            <h2><a href="{% url 'entry_detail' entry.pk %}">{{ entry.title }}</a></h2>
-            <p>{{ entry.body }}</p>
+        <div class="card">
+            <div class="card-header">
+            <span class="font-weight-bold">{{ entry.title }}</  span> &middot;
+            <span class="text-muted">by {{ entry.author }} |
+            {{ entry.date }}</span>
+            </div>
+            <div class="card-body">
+            {{ entry.body }}
+            </div>
+            <div class="card-footer text-center text-muted">
+            <a href="{% url 'entry_edit' entry.pk %}">Edit</a> |    <a href="{% url 'entry_delete' entry.pk %""}>Delete</a>
+            </div>
         </div>
+        <br />
     {% endfor %}
 {% endblock content %}

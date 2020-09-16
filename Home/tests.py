@@ -22,6 +22,9 @@ class EntryTests(TestCase):
         entry = Entry(title='A sample title')
         self.assertEqual(str(entry), entry.title)
 
+    def test_get_absolute_url(self):
+        self.assertEqual(self.entry.get_absolute_url(), '/entry/1/')
+
     def test_entry_content(self):
         self.assertEqual(f'{self.entry.title}', 'A good title')
         self.assertEqual(f'{self.entry.author}', 'testuser')
@@ -41,3 +44,26 @@ class EntryTests(TestCase):
         self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'A good title')
         self.assertTemplateUsed(response, 'entry_detail.html')
+
+    def test_entry_create_view(self):
+        response = self.client.post(reverse('entry_new'), {
+            'title':'New title',
+            'body':'New text',
+            'author': self.user,
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'New title')
+        self.assertContains(response, 'New text')
+
+    def test_entry_update_view(self):
+        response = self.client.post(reverse('entry_edit', args='1'), {
+            'title': 'Updated title',
+            'body': 'Updated text',
+        })
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_entry_delete_view(self): 
+        response = self.client.post(
+            reverse('entry_delete', args='1'))
+        self.assertEqual(response.status_code, 302)
